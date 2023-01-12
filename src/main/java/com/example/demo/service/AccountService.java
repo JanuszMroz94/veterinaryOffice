@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.Account;
-import com.example.demo.entity.Appointment;
 import com.example.demo.entity.Specialization;
 import com.example.demo.exception.SpecializationNotFound;
 import com.example.demo.exception.UserNotFound;
@@ -82,11 +81,5 @@ public class AccountService {
         return specialization;
     }
 
-    public Appointment addAppointment(Appointment appointment) {
-        return appointmentRepo.save(appointment);
-    }
 
-    public List<Appointment> getAllAppointment() {
-        return appointmentRepo.findAll();
-    }
 }

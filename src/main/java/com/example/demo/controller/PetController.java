@@ -27,7 +27,7 @@ public class PetController {
         return petService.getAllPets();
     }
 
-    @PostMapping("/pet")
+    @PostMapping()
     public Pet addPet(@RequestBody Pet pet) {
         return petService.addPet(pet);
     }

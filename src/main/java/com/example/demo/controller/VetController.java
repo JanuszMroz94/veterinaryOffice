@@ -16,7 +16,7 @@ public class VetController {
         this.vetService = vetService;
     }
 
-    @PostMapping("/vet/")
+    @PostMapping()
     public Vet addVet(@RequestBody Vet vet) {
         return vetService.addVet(vet);
     }

@@ -1,8 +1,10 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.Account;
-import com.example.demo.repo.AccountRepo;
+import com.example.demo.entity.Vet;
+import com.example.demo.repo.VetRepo;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.logging.log4j.spi.ObjectThreadContextMap;
+import org.aspectj.lang.annotation.After;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,40 +23,43 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class AccountControllerTest {
+public class VetControllerTest {
 
     @Autowired
-    AccountRepo accountRepo;
+    VetRepo vetRepo;
     @Autowired
     MockMvc mockMvc;
     @Autowired
     ObjectMapper objectMapper;
 
     @BeforeEach
-    void clearDB() {
-        accountRepo.deleteAll();
+    void clearDB(){
+        vetRepo.deleteAll();
     }
 
     @AfterEach
-    void clearDBAfter() {
-        accountRepo.deleteAll();
+    void clearDBAfter(){
+        vetRepo.deleteAll();
     }
 
     @Test
-    void shouldCheckIfAccountWasCreated() throws Exception {
+    void shouldCheckIfVetWasCreated() throws Exception{
         //given
-        Account account = new Account();
-        account.setName("John");
+        Vet vet = new Vet();
+        vet.setName("Dr. Dolittle");
         //when
-        mockMvc.perform(post("http://localhost:8080/api/account")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(account)))
+        mockMvc.perform(post("http://localhost:8080/api/vet")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(vet)))
                 .andDo(print())
                 .andExpect(status().isOk());
         //then
-        List<Account> all = accountRepo.findAll();
+        List<Vet> all = vetRepo.findAll();
         assertThat(all).isNotNull();
         assertThat(all).hasSize(1);
-        assertThat(all.get(0).getName()).isEqualTo("John");
+        assertThat(all.get(0).getName()).isEqualTo("Dr. Dolittle");
+
+
+
     }
 }

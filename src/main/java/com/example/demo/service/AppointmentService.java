@@ -63,6 +63,10 @@ public class AppointmentService {
         return appointmentRepo.findAll();
     }
 
+    public List<Appointment> getAllAppointment() {
+        return appointmentRepo.findAll();
+    }
+
     public void deleteAppointment(int id) {
         appointmentRepo.deleteById(id);
     }
@@ -111,5 +115,4 @@ public class AppointmentService {
         }
         return listOfEnds.get(i);
     }
-
 }

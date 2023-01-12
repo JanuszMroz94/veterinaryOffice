@@ -22,14 +22,14 @@ public class AccountController {
         return accountService.addAccount(account);
     }
 
+    @GetMapping
+    public Account getAccount(@RequestParam(name="id") int id) {
+        return accountService.getAccount(id);
+    }
+
     @GetMapping("/all")
     public List<Account> getAllAccount() {
         return accountService.getAllAccount();
-    }
-
-    @GetMapping("/{id}")
-    public Account getAccount(@PathVariable int id) {
-        return accountService.getAccount(id);
     }
 
     @DeleteMapping("/{id}")
@@ -42,14 +42,14 @@ public class AccountController {
         return accountService.addSpecialization(specialization);
     }
 
-    @GetMapping("/specialization/all")
-    public List<Specialization> getAllSpecialization() {
-        return accountService.getAllSpecialization();
-    }
-
     @GetMapping("/specialization/{id}")
     public Specialization getSpecialization(@PathVariable int id) {
         return accountService.getSpecialization(id);
+    }
+
+    @GetMapping("/specialization/all")
+    public List<Specialization> getAllSpecialization() {
+        return accountService.getAllSpecialization();
     }
 
     @DeleteMapping("/specialization/{id}")
