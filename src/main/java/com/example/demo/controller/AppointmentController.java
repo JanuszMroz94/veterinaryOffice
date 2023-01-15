@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.dto.VetName;
 import com.example.demo.entity.Appointment;
 import com.example.demo.service.AppointmentService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,14 +11,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/appointment")
+
 public class AppointmentController {
 
     private final AppointmentService appointmentService;
-
-    public AppointmentController(AppointmentService appointmentService) {
-        this.appointmentService = appointmentService;
-    }
 
     @GetMapping("/{id}")
     public Appointment getAppointment(@PathVariable int id) {

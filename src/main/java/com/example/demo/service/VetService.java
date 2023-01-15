@@ -3,18 +3,16 @@ package com.example.demo.service;
 import com.example.demo.entity.Vet;
 import com.example.demo.exception.VetNotFound;
 import com.example.demo.repo.VetRepo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class VetService {
 
     private final VetRepo vetRepo;
-
-    public VetService(VetRepo vetRepo) {
-        this.vetRepo = vetRepo;
-    }
 
     private void checkIfVetExists(int id) {
         vetRepo.findById(id).orElseThrow(VetNotFound::new);

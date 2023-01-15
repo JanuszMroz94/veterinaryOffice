@@ -5,20 +5,17 @@ import com.example.demo.entity.Pet;
 import com.example.demo.exception.PetNotFound;
 import com.example.demo.repo.AccountRepo;
 import com.example.demo.repo.PetRepo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class PetService {
 
     private final PetRepo petRepo;
     private final AccountRepo accountRepo;
-
-    public PetService(PetRepo petRepo, AccountRepo accountRepo) {
-        this.petRepo = petRepo;
-        this.accountRepo = accountRepo;
-    }
 
     private void checkIfPetExists(int id) {
         petRepo.findById(id).orElseThrow(PetNotFound::new);

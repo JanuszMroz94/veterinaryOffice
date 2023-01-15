@@ -2,20 +2,18 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Pet;
 import com.example.demo.service.PetService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/pet/")
 public class PetController {
 
 
     private final PetService petService;
-
-    public PetController(PetService petService) {
-        this.petService = petService;
-    }
 
     @GetMapping("/pet/{id}")
     public Pet getPet(@PathVariable int id) {

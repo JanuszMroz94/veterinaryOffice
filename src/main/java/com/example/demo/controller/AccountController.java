@@ -3,19 +3,17 @@ package com.example.demo.controller;
 import com.example.demo.entity.Account;
 import com.example.demo.entity.Specialization;
 import com.example.demo.service.AccountService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/account")
 public class AccountController {
 
     private final AccountService accountService;
-
-    public AccountController(AccountService accountService) {
-        this.accountService = accountService;
-    }
 
     @PostMapping
     public Account addAccount(@RequestBody Account account) {

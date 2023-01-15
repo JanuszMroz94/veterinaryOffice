@@ -5,26 +5,18 @@ import com.example.demo.entity.Specialization;
 import com.example.demo.exception.SpecializationNotFound;
 import com.example.demo.exception.UserNotFound;
 import com.example.demo.repo.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class AccountService {
 
     private final AccountRepo accountRepo;
     private final SpecializationRepo specializationRepo;
-    private final PetRepo petRepo;
-    private final AppointmentRepo appointmentRepo;
-    private final VetRepo vetRepo;
 
-    public AccountService(AccountRepo accountRepo, SpecializationRepo specializationRepo, PetRepo petRepo, AppointmentRepo appointmentRepo, VetRepo vetRepo) {
-        this.accountRepo = accountRepo;
-        this.specializationRepo = specializationRepo;
-        this.petRepo = petRepo;
-        this.appointmentRepo = appointmentRepo;
-        this.vetRepo = vetRepo;
-    }
 
     private void checkIfUserExists(int id) {
         accountRepo.findById(id).orElseThrow(UserNotFound::new);
@@ -40,7 +32,7 @@ public class AccountService {
 
     public Account getAccount(int id) {
         checkIfUserExists(id);
-        return accountRepo.findById(id).get();
+        return accountRepo.findById(id).orElse(null);
     }
 
     public List<Account> getAllAccount() {

@@ -7,6 +7,7 @@ import com.example.demo.exception.*;
 import com.example.demo.repo.AccountRepo;
 import com.example.demo.repo.AppointmentRepo;
 import com.example.demo.repo.VetRepo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -15,19 +16,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class AppointmentService {
 
-    private final AccountRepo accountRepo;
     private final AppointmentRepo appointmentRepo;
     private final VetRepo vetRepo;
 
     private final int ONE_HOUR = 1;
-
-    public AppointmentService(AccountRepo accountRepo, AppointmentRepo appointmentRepo, VetRepo vetRepo) {
-        this.accountRepo = accountRepo;
-        this.appointmentRepo = appointmentRepo;
-        this.vetRepo = vetRepo;
-    }
 
     private void checkIfVetExists(int id) {
         vetRepo.findById(id).orElseThrow(VetNotFound::new);

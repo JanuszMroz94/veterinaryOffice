@@ -2,19 +2,17 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Vet;
 import com.example.demo.service.VetService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/vet")
 public class VetController {
 
     private final VetService vetService;
-
-    public VetController(VetService vetService) {
-        this.vetService = vetService;
-    }
 
     @PostMapping()
     public Vet addVet(@RequestBody Vet vet) {
