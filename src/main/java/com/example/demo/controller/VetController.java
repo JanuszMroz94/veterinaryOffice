@@ -19,17 +19,17 @@ public class VetController {
         return vetService.addVet(vet);
     }
 
-    @GetMapping("/vet/{id}")
+    @GetMapping("/{id}")
     public Vet getVet(@PathVariable int id) {
         return vetService.getVet(id);
     }
 
-    @GetMapping("/vet/all")
+    @GetMapping("/all")
     public List<Vet> getAllVet() {
         return vetService.getAllVet();
     }
 
-    @DeleteMapping("/vet/{id}")
+    @DeleteMapping("/{id}")
     public void deleteVet(@PathVariable int id) {
         vetService.deleteVet(id);
     }

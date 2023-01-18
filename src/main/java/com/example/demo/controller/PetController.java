@@ -9,18 +9,18 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/pet/")
+@RequestMapping("/api/pet")
 public class PetController {
 
 
     private final PetService petService;
 
-    @GetMapping("/pet/{id}")
+    @GetMapping("/{id}")
     public Pet getPet(@PathVariable int id) {
         return petService.getPet(id);
     }
 
-    @GetMapping("/pet/all")
+    @GetMapping("/all")
     public List<Pet> getAllPet() {
         return petService.getAllPets();
     }
@@ -30,12 +30,12 @@ public class PetController {
         return petService.addPet(pet);
     }
 
-    @DeleteMapping("/pet/{id}")
+    @DeleteMapping("/{id}")
     public void deletePet(@PathVariable int id) {
         petService.deletePet(id);
     }
 
-    @PostMapping("/pet/{id}/{idP}")
+    @PostMapping("/{id}/account/{idP}")
     public Pet addPetToAccount(@PathVariable int id, @PathVariable int idP) {
         return petService.addPetToAccount(id, idP);
     }
