@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
 import com.example.demo.repo.AccountRepo;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -20,5 +19,5 @@ public class AccountServiceTest {
     @Autowired
     private MockMvc mockMvc;
 
-    private AccountService accountService;
+    private UserService userService;
 }

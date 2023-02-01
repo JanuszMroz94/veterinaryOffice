@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Data
@@ -15,6 +16,12 @@ public class Pet {
     int id;
 
     private String name;
+    private String type;
+    private int age;
+    @ElementCollection(targetClass=Integer.class)
+    private Set<String> illnesses;
+    @ElementCollection(targetClass=Integer.class)
+    private Set<String> appointments;
 
     @ManyToOne(cascade = {CascadeType.DETACH,
             CascadeType.MERGE,
@@ -22,7 +29,7 @@ public class Pet {
             CascadeType.PERSIST})
     @JoinColumn(
             name = "owner ID",
-            referencedColumnName = "id"
+            referencedColumnName = "userId"
     )
-    private Account owner;
+    private User owner;
 }

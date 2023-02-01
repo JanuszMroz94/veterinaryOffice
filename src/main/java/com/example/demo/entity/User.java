@@ -11,17 +11,22 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
-public class Account {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
+    int userId;
 
     private String name;
+    private String surname;
+    private String address;
+    private long PESEL;
+    private int phone;
+    private String email;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER,mappedBy = "listOfUsers", cascade = CascadeType.ALL)
-    private List<Specialization> specializations = new ArrayList<>();
+    @OneToMany(mappedBy = "vet")
+    List<Appointment> appointments = new ArrayList<>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "owner")

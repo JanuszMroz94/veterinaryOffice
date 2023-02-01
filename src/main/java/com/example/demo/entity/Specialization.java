@@ -25,9 +25,9 @@ public class Specialization {
                     CascadeType.PERSIST}
     )
     @JoinTable(
-            name = "users_specialization",
+            name = "vets_specialization",
             joinColumns = @JoinColumn(name = "specialization_Id"),
-            inverseJoinColumns = @JoinColumn(name = "account_Id")
+            inverseJoinColumns = @JoinColumn(name = "vet_Id")
     )
-    public List<Account> listOfUsers = new ArrayList<>();
+    public List<Vet> listOfVets = new ArrayList<>();
 }

@@ -27,4 +27,14 @@ public class Appointment {
             referencedColumnName = "vetId"
     )
     private Vet vet;
+
+    @ManyToOne(cascade = {CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.REFRESH,
+            CascadeType.PERSIST})
+    @JoinColumn(
+            name = "user",
+            referencedColumnName = "userId"
+    )
+    private User user;
 }

@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.Account;
+import com.example.demo.entity.User;
 import com.example.demo.repo.AccountRepo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class AccountControllerTest {
+public class UserControllerTest {
 
     @Autowired
     AccountRepo accountRepo;
@@ -43,18 +43,19 @@ public class AccountControllerTest {
     @Test
     void shouldCheckIfAccountWasCreated() throws Exception {
         //given
-        Account account = new Account();
-        account.setName("John");
+        User user = new User();
+        user.setName("John");
         //when
         mockMvc.perform(post("http://localhost:8080/api/account")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(account)))
+                        .content(objectMapper.writeValueAsString(user)))
                 .andDo(print())
                 .andExpect(status().isOk());
         //then
-        List<Account> all = accountRepo.findAll();
+        List<User> all = accountRepo.findAll();
         assertThat(all).isNotNull();
         assertThat(all).hasSize(1);
         assertThat(all.get(0).getName()).isEqualTo("John");
+
     }
 }

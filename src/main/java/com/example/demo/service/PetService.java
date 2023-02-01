@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.Account;
+import com.example.demo.entity.User;
 import com.example.demo.entity.Pet;
 import com.example.demo.exception.PetNotFound;
 import com.example.demo.repo.AccountRepo;
@@ -40,9 +40,9 @@ public class PetService {
     }
 
     public Pet addPetToAccount(int id, int idP) {
-        Account account = accountRepo.findById(id).get();
+        User user = accountRepo.findById(id).get();
         Pet pet = petRepo.findById(idP).get();
-        pet.setOwner(account);
+        pet.setOwner(user);
         return petRepo.save(pet);
     }
 }

@@ -1,7 +1,8 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.Account;
+import com.example.demo.entity.User;
 import com.example.demo.entity.Specialization;
+import com.example.demo.entity.Vet;
 import com.example.demo.exception.SpecializationNotFound;
 import com.example.demo.exception.UserNotFound;
 import com.example.demo.repo.*;
@@ -12,10 +13,11 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class AccountService {
+public class UserService {
 
     private final AccountRepo accountRepo;
     private final SpecializationRepo specializationRepo;
+    private final VetRepo vetRepo;
 
 
     private void checkIfUserExists(int id) {
@@ -26,16 +28,16 @@ public class AccountService {
         specializationRepo.findById(id).orElseThrow(SpecializationNotFound::new);
     }
 
-    public Account addAccount(Account account) {
-        return accountRepo.save(account);
+    public User addAccount(User user) {
+        return accountRepo.save(user);
     }
 
-    public Account getAccount(int id) {
+    public User getAccount(int id) {
         checkIfUserExists(id);
         return accountRepo.findById(id).orElse(null);
     }
 
-    public List<Account> getAllAccount() {
+    public List<User> getAllAccount() {
         return accountRepo.findAll();
     }
 
@@ -65,11 +67,11 @@ public class AccountService {
     public Specialization addSpecializationToAccount(int sid, int id) {
         checkIfUserExists(id);
         checkIfSpecializationExists(id);
-        Account account = accountRepo.findById(id).get();
+        Vet vet = vetRepo.findById(id).get();
         Specialization specialization = specializationRepo.findById(sid).get();
-        specialization.getListOfUsers().add(account);
-        account.getSpecializations().add(specialization);
-        accountRepo.save(account);
+        specialization.getListOfVets().add(vet);
+        vet.getSpecializations().add(specialization);
+        vetRepo.save(vet);
         return specialization;
     }
 
