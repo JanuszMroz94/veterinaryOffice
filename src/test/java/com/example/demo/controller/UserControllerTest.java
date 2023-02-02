@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.User;
-import com.example.demo.repo.AccountRepo;
+import com.example.demo.repo.UserRepo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class UserControllerTest {
 
     @Autowired
-    AccountRepo accountRepo;
+    UserRepo userRepo;
     @Autowired
     MockMvc mockMvc;
     @Autowired
@@ -32,12 +32,12 @@ public class UserControllerTest {
 
     @BeforeEach
     void clearDB() {
-        accountRepo.deleteAll();
+        userRepo.deleteAll();
     }
 
     @AfterEach
     void clearDBAfter() {
-        accountRepo.deleteAll();
+        userRepo.deleteAll();
     }
 
     @Test
@@ -52,7 +52,7 @@ public class UserControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk());
         //then
-        List<User> all = accountRepo.findAll();
+        List<User> all = userRepo.findAll();
         assertThat(all).isNotNull();
         assertThat(all).hasSize(1);
         assertThat(all.get(0).getName()).isEqualTo("John");

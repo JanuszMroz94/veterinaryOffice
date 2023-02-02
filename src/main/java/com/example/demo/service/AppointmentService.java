@@ -4,7 +4,6 @@ import com.example.demo.dto.VetName;
 import com.example.demo.entity.Appointment;
 import com.example.demo.entity.Vet;
 import com.example.demo.exception.*;
-import com.example.demo.repo.AccountRepo;
 import com.example.demo.repo.AppointmentRepo;
 import com.example.demo.repo.VetRepo;
 import lombok.RequiredArgsConstructor;
@@ -40,15 +39,13 @@ public class AppointmentService {
 
     public String checkIfVetHasVisitAtThatTime(int id, LocalDateTime dateTime) {
         checkIfAppointmentAlreadyTaken(id, dateTime);
-        return "Wizyta dostępna";
+        return "Appointment available";
     }
-
     public void checkIfDatesAreCorrect(LocalDateTime startDate, LocalDateTime endDate) {
         if (startDate.isAfter(endDate)) {
             throw new TimeNotCorrect();
         }
     }
-
     public Appointment getAppointment(int id) {
         checkIfAppointmentExists(id);
         return appointmentRepo.findById(id).get();
@@ -100,7 +97,7 @@ public class AppointmentService {
         for (Timestamp t : lista) {
             listOfEnds.add(t.toLocalDateTime());
         }
-        int i = 1;
+        int i = 0;
         for (LocalDateTime l : listOfEnds) {
             if (l.getHour() + ONE_HOUR == listOfEnds.get(i).getHour()) {
                 i++;

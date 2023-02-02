@@ -17,6 +17,7 @@ public class Appointment {
 
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+    private int price;
 
     @ManyToOne(cascade = {CascadeType.DETACH,
             CascadeType.MERGE,

@@ -15,8 +15,8 @@ public class PetController {
 
     private final PetService petService;
 
-    @GetMapping("/{id}")
-    public Pet getPet(@PathVariable int id) {
+    @GetMapping()
+    public Pet getPet(@RequestParam(name = "id") int id) {
         return petService.getPet(id);
     }
 
@@ -30,12 +30,12 @@ public class PetController {
         return petService.addPet(pet);
     }
 
-    @DeleteMapping("/{id}")
-    public void deletePet(@PathVariable int id) {
+    @DeleteMapping()
+    public void deletePet(@RequestParam(name = "id") int id) {
         petService.deletePet(id);
     }
 
-    @PostMapping("/{id}/account/{idP}")
+    @PostMapping("/{id}/user/{idP}")
     public Pet addPetToAccount(@PathVariable int id, @PathVariable int idP) {
         return petService.addPetToAccount(id, idP);
     }

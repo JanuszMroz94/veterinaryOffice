@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.repo.AccountRepo;
+import com.example.demo.repo.UserRepo;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 public class AccountServiceTest {
 
     @Mock
-    AccountRepo accountRepo;
+    UserRepo userRepo;
     @Autowired
     private MockMvc mockMvc;
 

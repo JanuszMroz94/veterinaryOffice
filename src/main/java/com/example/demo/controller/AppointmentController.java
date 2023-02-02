@@ -52,7 +52,9 @@ public class AppointmentController {
     }
 
     @GetMapping("/checkVets")
-    public List<VetName> checkVets(@RequestParam(name = "startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate) {
+    public List<VetName> checkVets(@RequestParam(name = "startDate")
+                                       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                               LocalDateTime startDate) {
         return appointmentService.getAvaliableVets(startDate);
     }
 
