@@ -5,6 +5,8 @@ import com.example.demo.entity.Appointment;
 import com.example.demo.service.AppointmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -19,47 +21,53 @@ public class AppointmentController {
     private final AppointmentService appointmentService;
 
     @GetMapping("/{id}")
-    public Appointment getAppointment(@PathVariable int id) {
-        return appointmentService.getAppointment(id);
+    public ResponseEntity<Appointment> getAppointment(@PathVariable int id) {
+        return new ResponseEntity<>(appointmentService.getAppointment(id), HttpStatus.OK);
     }
 
     @GetMapping("/checkIfHasAppointment/{id}/{dateTime}")
-    public String check(@PathVariable int id, @PathVariable String dateTime) {
+    public ResponseEntity<String> check(@PathVariable int id, @PathVariable String dateTime) {
         LocalDateTime dateTime2 = LocalDateTime.parse(dateTime);
-        return appointmentService.checkIfVetHasVisitAtThatTime(id, dateTime2);
+        return new ResponseEntity<>(appointmentService.checkIfVetHasVisitAtThatTime(id, dateTime2), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteAppointment(@PathVariable int id) {
+    public ResponseEntity<Void> deleteAppointment(@PathVariable int id) {
         appointmentService.deleteAppointment(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/firstAvaliableAppointment")
-    public Appointment abc() {
-        return appointmentService.firstAvailableAppointment();
+    public ResponseEntity<Appointment> abc() {
+        return new ResponseEntity<>(appointmentService.firstAvailableAppointment(), HttpStatus.OK);
     }
 
     @PostMapping("/add")
-    public Appointment addAppointmentToVet(@RequestParam(name = "id") int id,
-                                           @RequestParam(name = "startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
-                                           @RequestParam(name = "endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
-        return appointmentService.addAppointmentToVet(id, startDate, endDate);
+    public ResponseEntity<Appointment> addAppointmentToVet(@RequestParam(name = "id") int id,
+                                                           @RequestParam(name = "idU") int idU,
+                                                           @RequestParam(name = "idP") int idP,
+                                                           @RequestParam(name = "startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+                                                           @RequestParam(name = "endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
+
+        return new ResponseEntity<>(
+                appointmentService.addAppointmentToVet(id, idU, idP, startDate, endDate)
+                , HttpStatus.CREATED);
     }
 
     @GetMapping("/all")
-    public List<Appointment> getAll(){
-        return appointmentService.getAllAppointment();
+    public ResponseEntity<List<Appointment>> getAll() {
+        return new ResponseEntity<>(appointmentService.getAllAppointment(), HttpStatus.OK);
     }
 
     @GetMapping("/checkVets")
-    public List<VetName> checkVets(@RequestParam(name = "startDate")
-                                       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                                               LocalDateTime startDate) {
-        return appointmentService.getAvaliableVets(startDate);
+    public ResponseEntity<List<VetName>> checkVets(@RequestParam(name = "startDate")
+                                                   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                                           LocalDateTime startDate) {
+        return new ResponseEntity<>(appointmentService.getAvaliableVets(startDate), HttpStatus.OK);
     }
 
     @GetMapping("/firestAvailableDate")
-    public LocalDateTime firstAvailableDate(@RequestParam(name = "id") int id) {
-        return appointmentService.getFirstAvaliableDateCertainVet(id);
+    public ResponseEntity<LocalDateTime> firstAvailableDate(@RequestParam(name = "id") int id) {
+        return new ResponseEntity<>(appointmentService.getFirstAvaliableDateCertainVet(id), HttpStatus.OK);
     }
 }

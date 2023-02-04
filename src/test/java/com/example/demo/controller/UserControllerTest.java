@@ -46,7 +46,7 @@ public class UserControllerTest {
         User user = new User();
         user.setName("John");
         //when
-        mockMvc.perform(post("http://localhost:8080/api/account")
+        mockMvc.perform(post("http://localhost:8080/api/user")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(user)))
                 .andDo(print())

@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Specialization;
 import com.example.demo.service.SpecializationService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,27 +19,28 @@ public class SpecializationController {
     }
 
     @PostMapping()
-    public Specialization addSpec(@RequestBody Specialization specialization) {
-        return specializationService.addSpecialization(specialization);
+    public ResponseEntity<Specialization> addSpec(@RequestBody Specialization specialization) {
+        return new ResponseEntity<>(specializationService.addSpecialization(specialization), HttpStatus.CREATED);
     }
 
     @GetMapping()
-    public Specialization getSpecialization(@RequestParam(name = "id") int id) {
-        return specializationService.getSpecialization(id);
+    public ResponseEntity<Specialization> getSpecialization(@RequestParam(name = "id") int id) {
+        return new ResponseEntity<>(specializationService.getSpecialization(id), HttpStatus.OK);
     }
 
     @GetMapping("/all")
-    public List<Specialization> getAllSpecialization() {
-        return specializationService.getAllSpecialization();
+    public ResponseEntity<List<Specialization>> getAllSpecialization() {
+        return new ResponseEntity<>(specializationService.getAllSpecialization(), HttpStatus.OK);
     }
 
     @DeleteMapping()
-    public void deleteSpecialization(@RequestParam(name = "id") int id) {
+    public ResponseEntity<Void> deleteSpecialization(@RequestParam(name = "id") int id) {
         specializationService.deleteSpecialization(id);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/{sid}/vet/{id}")
-    public Specialization addSpecTOAcc(@PathVariable int sid, @PathVariable int id) {
-        return specializationService.addSpecializationToAccount(sid, id);
+    public ResponseEntity<Specialization> addSpecTOAcc(@PathVariable int sid, @PathVariable int id) {
+        return new ResponseEntity<>(specializationService.addSpecializationToAccount(sid, id), HttpStatus.CREATED);
     }
 }

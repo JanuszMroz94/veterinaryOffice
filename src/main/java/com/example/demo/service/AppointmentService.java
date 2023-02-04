@@ -2,11 +2,17 @@ package com.example.demo.service;
 
 import com.example.demo.dto.VetName;
 import com.example.demo.entity.Appointment;
+import com.example.demo.entity.Pet;
+import com.example.demo.entity.User;
 import com.example.demo.entity.Vet;
 import com.example.demo.exception.*;
 import com.example.demo.repo.AppointmentRepo;
+import com.example.demo.repo.PetRepo;
+import com.example.demo.repo.UserRepo;
 import com.example.demo.repo.VetRepo;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -20,6 +26,8 @@ public class AppointmentService {
 
     private final AppointmentRepo appointmentRepo;
     private final VetRepo vetRepo;
+    private final UserRepo userRepo;
+    private final PetRepo petRepo;
 
     private final int ONE_HOUR = 1;
 
@@ -41,11 +49,13 @@ public class AppointmentService {
         checkIfAppointmentAlreadyTaken(id, dateTime);
         return "Appointment available";
     }
+
     public void checkIfDatesAreCorrect(LocalDateTime startDate, LocalDateTime endDate) {
         if (startDate.isAfter(endDate)) {
             throw new TimeNotCorrect();
         }
     }
+
     public Appointment getAppointment(int id) {
         checkIfAppointmentExists(id);
         return appointmentRepo.findById(id).get();
@@ -71,7 +81,7 @@ public class AppointmentService {
         return appointment.get(0);
     }
 
-    public Appointment addAppointmentToVet(int id,
+    public Appointment addAppointmentToVet(int id, int idU, int idP,
                                            LocalDateTime startDate,
                                            LocalDateTime endDate) {
         checkIfVetExists(id);
@@ -79,15 +89,22 @@ public class AppointmentService {
         checkIfDatesAreCorrect(startDate, endDate);
 
         Vet vet = vetRepo.findById(id).get();
+        User user = userRepo.findById(idU).get();
+        Pet pet = petRepo.findById(idP).get();
 
         Appointment appointment = new Appointment();
         appointment.setStartDate(startDate);
         appointment.setEndDate(endDate);
         appointment.setVet(vet);
+        appointment.setUser(user);
+        appointment.setPet(pet);
+
         return appointmentRepo.save(appointment);
     }
+
     public List<VetName> getAvaliableVets(LocalDateTime startDate) {
         List<VetName> lista = appointmentRepo.availableVetsCertainDate(startDate);
+        lista.forEach(System.out::println);
         return lista;
     }
 

@@ -38,4 +38,14 @@ public class Appointment {
             referencedColumnName = "userId"
     )
     private User user;
+
+    @ManyToOne(cascade = {CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.REFRESH,
+            CascadeType.PERSIST})
+    @JoinColumn(
+            name = "pet",
+            referencedColumnName = "petId"
+    )
+    private Pet pet;
 }

@@ -3,6 +3,8 @@ package com.example.demo.controller;
 import com.example.demo.entity.Pet;
 import com.example.demo.service.PetService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,27 +18,28 @@ public class PetController {
     private final PetService petService;
 
     @GetMapping()
-    public Pet getPet(@RequestParam(name = "id") int id) {
-        return petService.getPet(id);
+    public ResponseEntity<Pet> getPet(@RequestParam(name = "id") int id) {
+        return new ResponseEntity<>(petService.getPet(id), HttpStatus.OK);
     }
 
     @GetMapping("/all")
-    public List<Pet> getAllPet() {
-        return petService.getAllPets();
+    public ResponseEntity<List<Pet>> getAllPet() {
+        return new ResponseEntity<>(petService.getAllPets(), HttpStatus.OK);
     }
 
     @PostMapping()
-    public Pet addPet(@RequestBody Pet pet) {
-        return petService.addPet(pet);
+    public ResponseEntity<Pet> addPet(@RequestBody Pet pet) {
+        return new ResponseEntity<>(petService.addPet(pet), HttpStatus.CREATED);
     }
 
     @DeleteMapping()
-    public void deletePet(@RequestParam(name = "id") int id) {
+    public ResponseEntity<Void> deletePet(@RequestParam(name = "id") int id) {
         petService.deletePet(id);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/{id}/user/{idP}")
-    public Pet addPetToAccount(@PathVariable int id, @PathVariable int idP) {
-        return petService.addPetToAccount(id, idP);
+    public ResponseEntity<Pet> addPetToAccount(@PathVariable int id, @PathVariable int idP) {
+        return new ResponseEntity<>(petService.addPetToAccount(id, idP), HttpStatus.CREATED);
     }
 }

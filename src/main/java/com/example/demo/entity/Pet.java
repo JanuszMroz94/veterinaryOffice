@@ -1,9 +1,12 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -13,13 +16,15 @@ public class Pet {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
+    int petId;
 
     private String name;
     private String type;
     private int age;
     @ElementCollection(targetClass=Integer.class)
     private Set<String> illnesses;
+
+
     @ElementCollection(targetClass=Integer.class)
     private Set<String> appointments;
 
@@ -32,4 +37,8 @@ public class Pet {
             referencedColumnName = "userId"
     )
     private User owner;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "pet")
+    List<Appointment> pets = new ArrayList<>();
 }

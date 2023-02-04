@@ -49,8 +49,10 @@ public class SpecializationService {
     public Specialization addSpecializationToAccount(int sid, int id) {
         checkIfVetExists(id);
         checkIfSpecializationExists(id);
+
         Vet vet = vetRepo.findById(id).get();
         Specialization specialization = specializationRepo.findById(sid).get();
+
         specialization.getListOfVets().add(vet);
         vet.getSpecializations().add(specialization);
         vetRepo.save(vet);

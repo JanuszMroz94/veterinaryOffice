@@ -37,4 +37,11 @@ public interface AppointmentRepo extends JpaRepository<Appointment, Integer> {
             "WHERE vet.\"vet_id\" = ?1 "
             , nativeQuery = true)
     List<Timestamp> endDatesOfCertainVet(int id);
+
+    @Query(value = "SELECT vet.\"vet_id\" as vetId, vet.\"name\" as name FROM \"vet\" as vet " +
+            "LEFT JOIN \"appointment\" as appointment " +
+            "ON vet.\"vet_id\" = appointment.\"weterynarz\" " +
+            "WHERE HOUR(appointment.\"start_date\") <> HOUR(?1) OR appointment.\"start_date\" IS NULL"
+            , nativeQuery = true)
+    List<VetName> firstAvaliableDateAnyVet(LocalDateTime dateTime);
 }
