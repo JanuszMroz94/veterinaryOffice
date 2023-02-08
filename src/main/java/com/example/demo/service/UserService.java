@@ -25,6 +25,11 @@ public class UserService {
         return userRepo.save(user);
     }
 
+    public User patchAccount(int id, User user){
+        User user1 = userRepo.findById(id).get();
+        return userRepo.save(user1);
+    }
+
     public User getAccount(int id) {
         checkIfUserExists(id);
         return userRepo.findById(id).orElse(null);
@@ -38,10 +43,4 @@ public class UserService {
         checkIfUserExists(id);
         userRepo.deleteById(id);
     }
-
-
-
-
-
-
 }

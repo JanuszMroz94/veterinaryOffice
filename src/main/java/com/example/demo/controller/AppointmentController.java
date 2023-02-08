@@ -70,4 +70,9 @@ public class AppointmentController {
     public ResponseEntity<LocalDateTime> firstAvailableDate(@RequestParam(name = "id") int id) {
         return new ResponseEntity<>(appointmentService.getFirstAvaliableDateCertainVet(id), HttpStatus.OK);
     }
+
+    @GetMapping("/firstAvailableVet")
+    public ResponseEntity<List<VetName>> getFirstAvailableVet(){
+        return new ResponseEntity<>(appointmentService.firstAvailableVetEarliestHour(), HttpStatus.OK);
+    }
 }

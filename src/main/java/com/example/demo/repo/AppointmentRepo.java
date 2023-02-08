@@ -23,10 +23,11 @@ public interface AppointmentRepo extends JpaRepository<Appointment, Integer> {
             , nativeQuery = true)
     VetName hasVetAppointmentCertainDate(Integer id, LocalDateTime dateTime);
 
-    @Query(value = "SELECT vet.\"vet_id\" as vetId, vet.\"name\" as name FROM \"vet\" as vet " +
-            "LEFT JOIN \"appointment\" as appointment " +
-            "ON vet.\"vet_id\" = appointment.\"weterynarz\" " +
-            "WHERE HOUR(appointment.\"start_date\") <> HOUR(?1) OR appointment.\"start_date\" IS NULL"
+    @Query(value = "SELECT vet.\"vet_id\" as vetId, vet.\"name\" as name \n" +
+            "FROM \"vet\" as vet \n" +
+            "WHERE  NOT EXISTS (\n" +
+            "SELECT 1 FROM \"appointment\" as appointment \n" +
+            "WHERE vet.\"vet_id\" = appointment.\"weterynarz\" AND HOUR(appointment.\"start_date\") = HOUR('2023-01-08 12:00:00') OR appointment.\"start_date\" IS NULL  )\n"
             , nativeQuery = true)
     List<VetName> availableVetsCertainDate(LocalDateTime dateTime);
 
@@ -44,4 +45,15 @@ public interface AppointmentRepo extends JpaRepository<Appointment, Integer> {
             "WHERE HOUR(appointment.\"start_date\") <> HOUR(?1) OR appointment.\"start_date\" IS NULL"
             , nativeQuery = true)
     List<VetName> firstAvaliableDateAnyVet(LocalDateTime dateTime);
+
+
+    @Query(value = "SELECT vet.\"vet_id\" as vetId, vet.\"name\" as name \n" +
+            "FROM \"vet\" as vet \n" +
+            "LEFT JOIN \"appointment\" as appointment \n" +
+            "ON vet.\"vet_id\" = appointment.\"weterynarz\"\n" +
+            "WHERE HOUR(appointment .\"start_date\") <> HOUR('1999-01-08 08:00:00') \n" +
+            "ORDER BY appointment .\"start_date\" \n" +
+            "LIMIT 1", nativeQuery = true)
+    List<VetName> firstAvailableVetEarliestHour();
+
 }

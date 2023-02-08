@@ -124,4 +124,8 @@ public class AppointmentService {
         }
         return listOfEnds.get(i);
     }
+
+    public List<VetName> firstAvailableVetEarliestHour(){
+        return appointmentRepo.firstAvailableVetEarliestHour();
+    }
 }
