@@ -2,7 +2,8 @@ package com.example.demo.dto;
 
 import java.time.LocalDateTime;
 
-public interface VetName {
+public interface VetNameDate {
     int getVetId();
     String getName();
+    LocalDateTime getStartDate();
 }

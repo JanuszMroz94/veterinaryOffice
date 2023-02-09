@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.FirstAvailableVisit;
 import com.example.demo.dto.VetName;
+import com.example.demo.dto.VetNameDate;
 import com.example.demo.entity.Appointment;
 import com.example.demo.service.AppointmentService;
 import lombok.RequiredArgsConstructor;
@@ -72,7 +74,7 @@ public class AppointmentController {
     }
 
     @GetMapping("/firstAvailableVet")
-    public ResponseEntity<List<VetName>> getFirstAvailableVet(){
+    public ResponseEntity<FirstAvailableVisit> getFirstAvailableVet(){
         return new ResponseEntity<>(appointmentService.firstAvailableVetEarliestHour(), HttpStatus.OK);
     }
 }

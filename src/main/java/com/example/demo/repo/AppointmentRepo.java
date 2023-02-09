@@ -1,6 +1,7 @@
 package com.example.demo.repo;
 
 import com.example.demo.dto.VetName;
+import com.example.demo.dto.VetNameDate;
 import com.example.demo.entity.Appointment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -27,7 +28,7 @@ public interface AppointmentRepo extends JpaRepository<Appointment, Integer> {
             "FROM \"vet\" as vet \n" +
             "WHERE  NOT EXISTS (\n" +
             "SELECT 1 FROM \"appointment\" as appointment \n" +
-            "WHERE vet.\"vet_id\" = appointment.\"weterynarz\" AND HOUR(appointment.\"start_date\") = HOUR('2023-01-08 12:00:00') OR appointment.\"start_date\" IS NULL  )\n"
+            "WHERE vet.\"vet_id\" = appointment.\"weterynarz\" AND HOUR(appointment.\"start_date\") = HOUR(?1) OR appointment.\"start_date\" IS NULL  )\n"
             , nativeQuery = true)
     List<VetName> availableVetsCertainDate(LocalDateTime dateTime);
 
@@ -49,11 +50,10 @@ public interface AppointmentRepo extends JpaRepository<Appointment, Integer> {
 
     @Query(value = "SELECT vet.\"vet_id\" as vetId, vet.\"name\" as name \n" +
             "FROM \"vet\" as vet \n" +
-            "LEFT JOIN \"appointment\" as appointment \n" +
-            "ON vet.\"vet_id\" = appointment.\"weterynarz\"\n" +
-            "WHERE HOUR(appointment .\"start_date\") <> HOUR('1999-01-08 08:00:00') \n" +
-            "ORDER BY appointment .\"start_date\" \n" +
-            "LIMIT 1", nativeQuery = true)
-    List<VetName> firstAvailableVetEarliestHour();
+            "WHERE  NOT EXISTS (\n" +
+            "SELECT 1 FROM \"appointment\" as appointment \n" +
+            "WHERE vet.\"vet_id\" = appointment.\"weterynarz\" AND HOUR(appointment.\"start_date\") = HOUR(?1) OR appointment.\"start_date\" IS NULL  )\n"
+            , nativeQuery = true)
+    List<VetName> firstAvailableVetEarliestHour(LocalDateTime dateTime);
 
 }

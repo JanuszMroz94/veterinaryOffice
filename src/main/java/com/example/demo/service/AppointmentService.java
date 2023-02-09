@@ -1,6 +1,8 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.FirstAvailableVisit;
 import com.example.demo.dto.VetName;
+import com.example.demo.dto.VetNameDate;
 import com.example.demo.entity.Appointment;
 import com.example.demo.entity.Pet;
 import com.example.demo.entity.User;
@@ -11,12 +13,11 @@ import com.example.demo.repo.PetRepo;
 import com.example.demo.repo.UserRepo;
 import com.example.demo.repo.VetRepo;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,7 +105,6 @@ public class AppointmentService {
 
     public List<VetName> getAvaliableVets(LocalDateTime startDate) {
         List<VetName> lista = appointmentRepo.availableVetsCertainDate(startDate);
-        lista.forEach(System.out::println);
         return lista;
     }
 
@@ -125,7 +125,28 @@ public class AppointmentService {
         return listOfEnds.get(i);
     }
 
-    public List<VetName> firstAvailableVetEarliestHour(){
-        return appointmentRepo.firstAvailableVetEarliestHour();
+    public FirstAvailableVisit firstAvailableVetEarliestHour(){
+        List<VetName> lista;
+        FirstAvailableVisit firstAvailableVisit = new FirstAvailableVisit();
+
+        LocalDateTime localDateTime = LocalDateTime.now().plusHours(1);
+
+        if (localDateTime.getHour() > 15) {
+            localDateTime = localDateTime.plusDays(1);
+            localDateTime = localDateTime.withHour(8);
+        } else if (localDateTime.getHour() < 8) {
+            localDateTime = localDateTime.withHour(8);
+        }
+
+        do {
+            lista = appointmentRepo.firstAvailableVetEarliestHour(localDateTime);
+            localDateTime = localDateTime.plusHours(1);
+
+        } while (lista.isEmpty());
+        firstAvailableVisit.setVetName(lista);
+        firstAvailableVisit.setLocalDateTime(localDateTime.truncatedTo(ChronoUnit.HOURS));
+
+
+        return firstAvailableVisit;
     }
 }
