@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.FirstAvailableVisit;
 import com.example.demo.dto.VetName;
-import com.example.demo.dto.VetNameDate;
 import com.example.demo.entity.Appointment;
 import com.example.demo.service.AppointmentService;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -39,11 +39,6 @@ public class AppointmentController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/firstAvaliableAppointment")
-    public ResponseEntity<Appointment> abc() {
-        return new ResponseEntity<>(appointmentService.firstAvailableAppointment(), HttpStatus.OK);
-    }
-
     @PostMapping("/add")
     public ResponseEntity<Appointment> addAppointmentToVet(@RequestParam(name = "id") int id,
                                                            @RequestParam(name = "idU") int idU,
@@ -58,23 +53,36 @@ public class AppointmentController {
 
     @GetMapping("/all")
     public ResponseEntity<List<Appointment>> getAll() {
-        return new ResponseEntity<>(appointmentService.getAllAppointment(), HttpStatus.OK);
+        return new ResponseEntity<>(appointmentService.getAllAppointments(), HttpStatus.OK);
     }
 
     @GetMapping("/checkVets")
     public ResponseEntity<List<VetName>> checkVets(@RequestParam(name = "startDate")
                                                    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                                                            LocalDateTime startDate) {
-        return new ResponseEntity<>(appointmentService.getAvaliableVets(startDate), HttpStatus.OK);
+        return new ResponseEntity<>(appointmentService.getAvailableVetsGivenDateTime(startDate), HttpStatus.OK);
     }
 
-    @GetMapping("/firestAvailableDate")
+    @GetMapping("/firstAvailableDate")
     public ResponseEntity<LocalDateTime> firstAvailableDate(@RequestParam(name = "id") int id) {
-        return new ResponseEntity<>(appointmentService.getFirstAvaliableDateCertainVet(id), HttpStatus.OK);
+        return new ResponseEntity<>(appointmentService.getFirstAvailableDateGivenVet(id), HttpStatus.OK);
     }
 
     @GetMapping("/firstAvailableVet")
     public ResponseEntity<FirstAvailableVisit> getFirstAvailableVet(){
         return new ResponseEntity<>(appointmentService.firstAvailableVetEarliestHour(), HttpStatus.OK);
+    }
+
+    @GetMapping("/allAvailableAppointmentGivenDay")
+    public ResponseEntity<List<FirstAvailableVisit>> AppointmentsGivenDay(@RequestParam(name = "day")
+                                                                  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate day){
+        return new ResponseEntity<>(appointmentService.getAvailableVetsGivenDay(day), HttpStatus.OK);
+    }
+
+    @GetMapping("/allAvailableApointmentsGivenVetGivenDay")
+    public ResponseEntity<List<FirstAvailableVisit>> AppointmentsGivenVetGivenDay(@RequestParam(name = "day")
+                                                                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate day,
+                                                                                  @RequestParam(name = "id") int id){
+        return  new ResponseEntity<>(appointmentService.getAvailableGivenVetGivenDay(day,id), HttpStatus.OK);
     }
 }

@@ -21,11 +21,6 @@ public class UserController {
         return new ResponseEntity<>(userService.addAccount(user), HttpStatus.CREATED);
     }
 
-//    @PatchMapping
-//    public ResponseEntity<User> patchAccount(int id, @RequestBody User user){
-//        return new ResponseEntity<>(userService.patchAccount(user), HttpStatus.OK);
-//    }
-
     @GetMapping
     public ResponseEntity<User> getAccount(@RequestParam(name="id") int id) {
         return new ResponseEntity<>(userService.getAccount(id), HttpStatus.OK);
@@ -41,9 +36,4 @@ public class UserController {
         userService.deleteAccount(id);
         return ResponseEntity.noContent().build();
     }
-
-
-
-
-
 }

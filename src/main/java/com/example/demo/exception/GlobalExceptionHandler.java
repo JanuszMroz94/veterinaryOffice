@@ -52,8 +52,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<ErrorMessage>(errorMessage, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(NoAvaliableAppointments.class)
-    public ResponseEntity<ErrorMessage> handlerNoAvailableAppointments(NoAvaliableAppointments ex){
+    @ExceptionHandler(NoAvaliableAppointmentsException.class)
+    public ResponseEntity<ErrorMessage> handlerNoAvailableAppointments(NoAvaliableAppointmentsException ex){
         ErrorMessage errorMessage = new ErrorMessage(
                 ex.getMessage(),
                 HttpStatus.NOT_FOUND.value()
@@ -78,4 +78,16 @@ public class GlobalExceptionHandler {
         );
         return new ResponseEntity<ErrorMessage>(errorMessage, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(NoAvailableVetsException.class)
+    public ResponseEntity<ErrorMessage> handlerNoAvailableVetsException(NoAvailableVetsException ex){
+        ErrorMessage errorMessage = new ErrorMessage(
+                ex.getMessage(),
+                HttpStatus.BAD_REQUEST.value()
+        );
+        return new ResponseEntity<ErrorMessage>(errorMessage, HttpStatus.BAD_REQUEST);
+    }
+
+
+
 }

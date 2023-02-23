@@ -14,7 +14,7 @@ public class VetService {
 
     private final VetRepo vetRepo;
 
-    private void checkIfVetExists(int id) {
+    private void validateVetExists(int id) {
         vetRepo.findById(id).orElseThrow(VetNotFound::new);
     }
 
@@ -23,16 +23,16 @@ public class VetService {
     }
 
     public Vet getVet(int id) {
-        checkIfVetExists(id);
+        validateVetExists(id);
         return vetRepo.findById(id).get();
     }
 
-    public List<Vet> getAllVet() {
+    public List<Vet> getAllVets() {
         return vetRepo.findAll();
     }
 
     public void deleteVet(int id) {
-        checkIfVetExists(id);
+        validateVetExists(id);
         vetRepo.deleteById(id);
     }
 

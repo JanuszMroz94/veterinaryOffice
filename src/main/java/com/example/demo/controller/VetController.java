@@ -28,10 +28,10 @@ public class VetController {
 
     @GetMapping("/all")
     public ResponseEntity<List<Vet>> getAllVet() {
-        return new ResponseEntity<>(vetService.getAllVet(), HttpStatus.OK);
+        return new ResponseEntity<>(vetService.getAllVets(), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id}/")
     public ResponseEntity<Void> deleteVet(@PathVariable int id) {
         vetService.deleteVet(id);
         return ResponseEntity.noContent().build();

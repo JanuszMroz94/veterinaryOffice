@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -44,5 +45,14 @@ public class PetService {
         Pet pet = petRepo.findById(idP).get();
         pet.setOwner(user);
         return petRepo.save(pet);
+    }
+
+    public void addIllness(int id ,String illness) {
+        checkIfPetExists(id);
+        Pet pet = petRepo.findById(id).get();
+        Set<String> ill = pet.getIllnesses();
+        ill.add(illness);
+        pet.setIllnesses(ill);
+        petRepo.save(pet);
     }
 }

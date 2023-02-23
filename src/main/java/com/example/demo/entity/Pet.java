@@ -21,11 +21,11 @@ public class Pet {
     private String name;
     private String type;
     private int age;
-    @ElementCollection(targetClass=Integer.class)
+    @ElementCollection(targetClass=String.class)
     private Set<String> illnesses;
 
 
-    @ElementCollection(targetClass=Integer.class)
+    @ElementCollection(targetClass=String.class)
     private Set<String> appointments;
 
     @ManyToOne(cascade = {CascadeType.DETACH,

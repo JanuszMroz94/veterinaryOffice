@@ -42,4 +42,11 @@ public class PetController {
     public ResponseEntity<Pet> addPetToAccount(@PathVariable int id, @PathVariable int idP) {
         return new ResponseEntity<>(petService.addPetToAccount(id, idP), HttpStatus.CREATED);
     }
+
+    @PostMapping("/illness")
+    public ResponseEntity<Void> addIllness(@RequestParam(name= "id") int id,
+                                         @RequestParam(name="illness") String illness){
+        petService.addIllness(id, illness);
+        return ResponseEntity.noContent().build();
+    }
 }
