@@ -50,7 +50,7 @@ public class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(user)))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
         //then
         List<User> all = userRepo.findAll();
         assertThat(all).isNotNull();

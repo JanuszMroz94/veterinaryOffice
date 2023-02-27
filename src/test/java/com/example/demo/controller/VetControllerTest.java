@@ -52,7 +52,7 @@ public class VetControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(vet)))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
         //then
         List<Vet> all = vetRepo.findAll();
         assertThat(all).isNotNull();

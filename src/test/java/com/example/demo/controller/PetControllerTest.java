@@ -52,7 +52,7 @@ public class PetControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(pet)))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
         //then
         List<Pet> all = petRepo.findAll();
         assertThat(all).isNotNull();
