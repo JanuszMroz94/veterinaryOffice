@@ -1,5 +1,6 @@
 package com.example.demo.service.appointmentServiceTest;
 
+import com.example.demo.dto.VetName;
 import com.example.demo.entity.Vet;
 import com.example.demo.repo.AppointmentRepo;
 import com.example.demo.repo.VetRepo;
@@ -27,7 +28,7 @@ class GetFirstAvailableDateGivenVetTest {
     @InjectMocks
     private AppointmentService appointmentService;
 
-    //Mock your clock bean
+    //Mock clock bean
     @Mock
     private Clock clock;
 
@@ -36,51 +37,27 @@ class GetFirstAvailableDateGivenVetTest {
     @Mock
     VetRepo vetRepo;
 
-//    field that will contain the fixed clock
-//    private Clock fixedClock;
-
     @BeforeEach
     public void initMocks() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
     }
 
     @Test
-    public void testGetFirstAvailableDateGivenVetWhenHourIsBefore8(){
+    public void shouldReturnHour8SameDayIfNoAppointmentsAndHourIsBefore8() {
         //given
-        final LocalDate LOCAL_DATE = LocalDate.of(2000,1,1);
+        final LocalDate fixedTime = LocalDate.of(2000, 1, 1);
         Clock fixedClock;
-        fixedClock = Clock.fixed(LOCAL_DATE.atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+        fixedClock = Clock.fixed(fixedTime.atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
         doReturn(fixedClock.instant()).when(clock).instant();
         doReturn(fixedClock.getZone()).when(clock).getZone();
 
         when(vetRepo.findById(0)).thenReturn(Optional.of(new Vet()));
         List<Timestamp> emptyTimestamp = new ArrayList<>();
+        emptyTimestamp.add(null);
         when(appointmentRepo.endDatesOfCertainVet(eq(0))).thenReturn(emptyTimestamp);
-        LocalDateTime expected = LocalDateTime.of(2000,1,1,8,0);
 
-        //when
-        LocalDateTime result = appointmentService.getFirstAvailableDateGivenVet(0);
-
-        //then
-        assertThat(result).isEqualTo(expected);
-    }
-
-    @Test
-    public void testGetFirstAvailableDateGivenVetWhenHourIsAfter16(){
-        //given
-        final LocalDate LOCAL_DATE = LocalDate.of(2000,1,1);
-        Clock fixedClock;
-        fixedClock = Clock.fixed(LOCAL_DATE.atStartOfDay(ZoneId.systemDefault()).toInstant().plus(Duration.ofHours(17).plusMinutes(30)), ZoneId.systemDefault());
-        doReturn(fixedClock.instant()).when(clock).instant();
-        doReturn(fixedClock.getZone()).when(clock).getZone();
-
-
-        when(vetRepo.findById(0)).thenReturn(Optional.of(new Vet()));
-        List<Timestamp> emptyTimestamp = new ArrayList<>();
-        when(appointmentRepo.endDatesOfCertainVet(0)).thenReturn(emptyTimestamp);
-        LocalDateTime expected = LocalDateTime.of(2000,1,2,8,0);
-
+        LocalDateTime expected = LocalDateTime.of(2000, 1, 1, 8, 0);
         //when
         LocalDateTime result = appointmentService.getFirstAvailableDateGivenVet(0);
         //then
@@ -88,22 +65,125 @@ class GetFirstAvailableDateGivenVetTest {
     }
 
     @Test
-    public void testGetFirstAvailableDateGivenVetWhenHourIs12(){
+    public void shouldReturnHour8NextDayIfnoAppointmentsWhenHourIsAfter16() {
         //given
-        final LocalDate LOCAL_DATE = LocalDate.of(2000,1,1);
+        final LocalDate fixedTime = LocalDate.of(2000, 1, 1);
         Clock fixedClock;
-        fixedClock = Clock.fixed(LOCAL_DATE.atStartOfDay(ZoneId.systemDefault()).toInstant().plus(Duration.ofHours(12)), ZoneId.systemDefault());
+        fixedClock = Clock.fixed(fixedTime.atStartOfDay(ZoneId.systemDefault()).toInstant().plus(Duration.ofHours(17).plusMinutes(30)), ZoneId.systemDefault());
         doReturn(fixedClock.instant()).when(clock).instant();
         doReturn(fixedClock.getZone()).when(clock).getZone();
 
+
         when(vetRepo.findById(0)).thenReturn(Optional.of(new Vet()));
         List<Timestamp> emptyTimestamp = new ArrayList<>();
+        emptyTimestamp.add(null);
         when(appointmentRepo.endDatesOfCertainVet(0)).thenReturn(emptyTimestamp);
-        LocalDateTime expected = LocalDateTime.of(2000,1,1,13,0);
 
+        LocalDateTime expected = LocalDateTime.of(2000, 1, 2, 8, 0);
         //when
         LocalDateTime result = appointmentService.getFirstAvailableDateGivenVet(0);
         //then
         assertThat(result).isEqualTo(expected);
     }
+
+    @Test
+    public void shouldReturnHour13SameDayIfNoAppointmentsWhenHourIs12() {
+        //given
+        final LocalDate fixedTime = LocalDate.of(2000, 1, 1);
+        Clock fixedClock;
+        fixedClock = Clock.fixed(fixedTime.atStartOfDay(ZoneId.systemDefault()).toInstant().plus(Duration.ofHours(12)), ZoneId.systemDefault());
+        doReturn(fixedClock.instant()).when(clock).instant();
+        doReturn(fixedClock.getZone()).when(clock).getZone();
+
+        when(vetRepo.findById(0)).thenReturn(Optional.of(new Vet()));
+        List<Timestamp> emptyTimestamp = new ArrayList<>();
+        emptyTimestamp.add(null);
+        when(appointmentRepo.endDatesOfCertainVet(0)).thenReturn(emptyTimestamp);
+
+        LocalDateTime expected = LocalDateTime.of(2000, 1, 1, 13, 0);
+        //when
+        LocalDateTime result = appointmentService.getFirstAvailableDateGivenVet(0);
+        //then
+        assertThat(result).isEqualTo(expected);
+    }
+
+    @Test
+    public void shouldReturnHour8NextDayIfNoAppointmentsWhenHourIs15() {
+        //given
+        final LocalDate fixedTime = LocalDate.of(2000, 1, 1);
+        Clock fixedClock;
+        fixedClock = Clock.fixed(fixedTime.atStartOfDay(ZoneId.systemDefault()).toInstant().plus(Duration.ofHours(15)), ZoneId.systemDefault());
+        doReturn(fixedClock.instant()).when(clock).instant();
+        doReturn(fixedClock.getZone()).when(clock).getZone();
+
+        when(vetRepo.findById(0)).thenReturn(Optional.of(new Vet()));
+        List<Timestamp> emptyTimeStamp = new ArrayList<>();
+        emptyTimeStamp.add(null);
+        when(appointmentRepo.endDatesOfCertainVet(0)).thenReturn(emptyTimeStamp);
+
+        LocalDateTime expected = LocalDateTime.of(2000, 1, 2, 8, 0);
+        //when
+        LocalDateTime result = appointmentService.getFirstAvailableDateGivenVet(0);
+        //then
+        assertThat(result).isEqualTo(expected);
+    }
+
+    @Test
+    public void shouldReturnHour9SameDayIfNoAppointmentWhenHourIs8() {
+        //given
+        final LocalDate fixedTime = LocalDate.of(2000, 1, 1);
+        Clock fixedClock;
+        fixedClock = Clock.fixed(fixedTime.atStartOfDay(ZoneId.systemDefault()).toInstant().plus(Duration.ofHours(8)), ZoneId.systemDefault());
+        doReturn(fixedClock.instant()).when(clock).instant();
+        doReturn(fixedClock.getZone()).when(clock).getZone();
+
+        when(vetRepo.findById(0)).thenReturn(Optional.of(new Vet()));
+        List<Timestamp> emptyTimestamp = new ArrayList<>();
+        emptyTimestamp.add(null);
+        when(appointmentRepo.endDatesOfCertainVet(0)).thenReturn(emptyTimestamp);
+
+        LocalDateTime expected = LocalDateTime.of(2000, 1, 1, 9, 0);
+        //when
+        LocalDateTime result = appointmentService.getFirstAvailableDateGivenVet(0);
+        //then
+        assertThat(result).isEqualTo(expected);
+    }
+
+    @Test
+    public void shoudlReturnHour13SameDayIfHasAppointmentAt12WhenHourIs11() {
+        //given
+        final LocalDate fixedTime = LocalDate.of(2000, 1, 1);
+        Clock fixedClock;
+        fixedClock = Clock.fixed(fixedTime.atStartOfDay(ZoneId.systemDefault()).toInstant().plus(Duration.ofHours(11)), ZoneId.systemDefault());
+        doReturn(fixedClock.instant()).when(clock).instant();
+        doReturn(fixedClock.getZone()).when(clock).getZone();
+
+        when(vetRepo.findById(0)).thenReturn(Optional.of(new Vet()));
+        List<Timestamp> appointmentTimestamp = List.of(Timestamp.valueOf("2000-01-01 13:00:00"));
+
+        when(appointmentRepo.endDatesOfCertainVet(0)).thenReturn(appointmentTimestamp);
+        when(appointmentRepo.hasVetAppointmentCertainDate(0, LocalDateTime.of(
+                2000
+                , 1
+                , 1
+                , 12
+                , 0))).thenReturn(new VetName() {
+            @Override
+            public int getVetId() {
+                return 0;
+            }
+
+            @Override
+            public String getName() {
+                return null;
+            }
+        });
+
+        LocalDateTime expected = LocalDateTime.of(2000, 1, 1, 13, 0);
+        //when
+        LocalDateTime result = appointmentService.getFirstAvailableDateGivenVet(0);
+        //then
+        assertThat(result).isEqualTo(expected);
+    }
+
 }

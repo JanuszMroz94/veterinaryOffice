@@ -12,6 +12,8 @@ import com.example.demo.repo.PetRepo;
 import com.example.demo.repo.UserRepo;
 import com.example.demo.repo.VetRepo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -26,7 +28,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-
 @Service
 @RequiredArgsConstructor
 public class AppointmentService {
@@ -35,12 +36,7 @@ public class AppointmentService {
     private final VetRepo vetRepo;
     private final UserRepo userRepo;
     private final PetRepo petRepo;
-    private  final Clock clock;
-
-//    @Bean
-//    public Clock clock() {
-//        return Clock.systemDefaultZone();
-//    }
+    private final Clock clock;
 
     private void checkIfVetExists(int id) {
         vetRepo.findById(id).orElseThrow(VetNotFound::new);
@@ -146,27 +142,28 @@ public class AppointmentService {
         //if vet has no appointments at all
         List<Timestamp> endDates = appointmentRepo.endDatesOfCertainVet(id);
         LocalDateTime availableTime = LocalDateTime.now(clock).truncatedTo(ChronoUnit.HOURS);
-        if (endDates.isEmpty()) {
+        if (endDates.get(0)==null) {
             LocalTime currentHour = LocalTime.now(clock).plusHours(1).truncatedTo(ChronoUnit.HOURS);
             LocalTime openingHour = LocalTime.of(8, 0);
-            LocalTime closingHour = LocalTime.of(16, 0);
+            LocalTime closingHour = LocalTime.of(15, 59);
             if (currentHour.isAfter(closingHour) || currentHour.isBefore(openingHour)) {
                 availableTime = availableTime.plusDays(currentHour.isBefore(openingHour) ? 0 : 1).with(openingHour);
                 return availableTime;
             } else {
                 return availableTime.plusHours(1);
             }
-
         }
         //if vet has appointments
-        availableTime = Stream.iterate(LocalDateTime.now(clock), t -> t.plusHours(1))
+        availableTime = Stream.iterate(LocalDateTime.now(clock).plusHours(1), t -> t.plusHours(1))
                 .filter(t -> t.getHour() < 16 && t.getHour() >= 8)
                 .filter(t -> appointmentRepo.hasVetAppointmentCertainDate(id, t) == null)
                 .findFirst()
                 .orElse(null);
+
         if (availableTime != null) {
             availableTime = availableTime.truncatedTo(ChronoUnit.HOURS);
         }
+
         return availableTime;
     }
 
@@ -175,13 +172,12 @@ public class AppointmentService {
             throw new NoAvaliableAppointmentsException();
         }
         //check if current hour is between 8-16
-        LocalDateTime localDateTime = setDateTimeIfExceedsLimit(LocalDateTime.now().plusHours(1));
+        LocalDateTime localDateTime = setDateTimeIfExceedsLimit(LocalDateTime.now(clock).plusHours(1));
 
         AtomicReference<LocalDateTime> availableAppointmentTime = new AtomicReference<>(localDateTime);
 
         List<VetName> available_vets = Stream
-                .iterate(localDateTime, dt ->
-                setDateTimeIfExceedsLimit(dt.plusHours(1)))
+                .iterate(localDateTime, dt -> setDateTimeIfExceedsLimit(dt.plusHours(1)))
                 .filter(dt -> !appointmentRepo.firstAvailableVetEarliestHour(dt).isEmpty())
                 .peek(availableAppointmentTime::set)
                 .findFirst()
