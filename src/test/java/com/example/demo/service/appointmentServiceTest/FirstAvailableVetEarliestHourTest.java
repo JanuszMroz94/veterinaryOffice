@@ -105,7 +105,7 @@ public class FirstAvailableVetEarliestHourTest {
     }
 
     @Test
-    public void noVetsInDB(){
+    public void sohuldThrowExceptionIfThereIsNoVets(){
         //given
         //when
         Throwable throwable = catchThrowable(()-> appointmentService.firstAvailableVetEarliestHour());

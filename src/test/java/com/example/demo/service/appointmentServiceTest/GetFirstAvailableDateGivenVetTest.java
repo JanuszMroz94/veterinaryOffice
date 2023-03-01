@@ -2,6 +2,7 @@ package com.example.demo.service.appointmentServiceTest;
 
 import com.example.demo.dto.VetName;
 import com.example.demo.entity.Vet;
+import com.example.demo.exception.VetNotFound;
 import com.example.demo.repo.AppointmentRepo;
 import com.example.demo.repo.VetRepo;
 import com.example.demo.service.AppointmentService;
@@ -18,13 +19,14 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 class GetFirstAvailableDateGivenVetTest {
 
-    // mock your tested class
+    // mock tested class
     @InjectMocks
     private AppointmentService appointmentService;
 
@@ -184,6 +186,15 @@ class GetFirstAvailableDateGivenVetTest {
         LocalDateTime result = appointmentService.getFirstAvailableDateGivenVet(0);
         //then
         assertThat(result).isEqualTo(expected);
+    }
+    @Test
+    public void shouldThrowExceptionIfThereIsNoVet(){
+        //given
+        //when
+        Throwable throwable = catchThrowable(()-> appointmentService.getFirstAvailableDateGivenVet(0));
+        //then
+        assertThat(throwable).isInstanceOf(VetNotFound.class);
+
     }
 
 }

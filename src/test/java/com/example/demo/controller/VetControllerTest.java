@@ -48,7 +48,7 @@ public class VetControllerTest {
         Vet vet = new Vet();
         vet.setName("Dr. Dolittle");
         //when
-        mockMvc.perform(post("http://localhost:8080/api/vet")
+        mockMvc.perform(post("http://localhost:8080/api/vets")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(vet)))
                 .andDo(print())

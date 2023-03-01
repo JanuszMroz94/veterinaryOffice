@@ -187,10 +187,12 @@ public class AppointmentService {
     }
 
     private LocalDateTime setDateTimeIfExceedsLimit(LocalDateTime localDateTime) {
-        if (localDateTime.getHour() > 15) {
-            localDateTime = localDateTime.plusDays(1).withHour(8);
-        } else if (localDateTime.getHour() < 8) {
-            localDateTime = localDateTime.withHour(8);
+        final int CLOSING_HOUR = 15;
+        final int OPENING_HOUR = 8;
+        if (localDateTime.getHour() > CLOSING_HOUR) {
+            localDateTime = localDateTime.plusDays(1).withHour(OPENING_HOUR);
+        } else if (localDateTime.getHour() < OPENING_HOUR) {
+            localDateTime = localDateTime.withHour(OPENING_HOUR);
         }
         return localDateTime;
     }

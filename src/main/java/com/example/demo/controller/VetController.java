@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/vet")
+@RequestMapping("/api/vets")
 public class VetController {
 
     private final VetService vetService;

@@ -24,7 +24,7 @@ public class Appointment {
             CascadeType.REFRESH,
             CascadeType.PERSIST})
     @JoinColumn(
-            name = "weterynarz",
+            name = "vet",
             referencedColumnName = "vetId"
     )
     private Vet vet;

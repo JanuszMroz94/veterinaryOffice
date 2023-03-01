@@ -48,7 +48,7 @@ public class PetControllerTest {
         Pet pet = new Pet();
         pet.setName("Azor");
         //when
-        mockMvc.perform(post("http://localhost:8080/api/pet/")
+        mockMvc.perform(post("http://localhost:8080/api/pets/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(pet)))
                 .andDo(print())
