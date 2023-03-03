@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.entity.User;
 import com.example.demo.entity.Pet;
 import com.example.demo.exception.PetNotFound;
+import com.example.demo.exception.UserNotFound;
 import com.example.demo.repo.UserRepo;
 import com.example.demo.repo.PetRepo;
 import lombok.RequiredArgsConstructor;
@@ -23,12 +24,7 @@ public class PetService {
     }
 
     public Pet getPet(int id) {
-        checkIfPetExists(id);
-        return petRepo.findById(id).get();
-    }
-
-    public List<Pet> getAllPets() {
-        return petRepo.findAll();
+        return petRepo.findById(id).orElseThrow(PetNotFound::new);
     }
 
     public Pet addPet(Pet pet) {
@@ -41,15 +37,14 @@ public class PetService {
     }
 
     public Pet addPetToAccount(int id, int idP) {
-        User user = userRepo.findById(id).get();
+        User user = userRepo.findById(id).orElseThrow(UserNotFound::new);
         Pet pet = petRepo.findById(idP).get();
         pet.setOwner(user);
         return petRepo.save(pet);
     }
 
     public void addIllness(int id ,String illness) {
-        checkIfPetExists(id);
-        Pet pet = petRepo.findById(id).get();
+        Pet pet = petRepo.findById(id).orElseThrow(PetNotFound::new);
         Set<String> ill = pet.getIllnesses();
         ill.add(illness);
         pet.setIllnesses(ill);

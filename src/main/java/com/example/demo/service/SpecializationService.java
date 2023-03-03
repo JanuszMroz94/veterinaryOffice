@@ -4,6 +4,7 @@ import com.example.demo.entity.Specialization;
 import com.example.demo.entity.Vet;
 import com.example.demo.exception.SpecializationNotFound;
 import com.example.demo.exception.UserNotFound;
+import com.example.demo.exception.VetNotFound;
 import com.example.demo.repo.SpecializationRepo;
 import com.example.demo.repo.VetRepo;
 import org.springframework.stereotype.Service;
@@ -24,17 +25,13 @@ public class SpecializationService {
     private void checkIfSpecializationExists(int id) {
         specializationRepo.findById(id).orElseThrow(SpecializationNotFound::new);
     }
-    private void checkIfVetExists(int id) {
-        vetRepo.findById(id).orElseThrow(UserNotFound::new);
-    }
 
     public Specialization addSpecialization(Specialization specialization) {
         return specializationRepo.save(specialization);
     }
 
     public Specialization getSpecialization(int id) {
-        checkIfSpecializationExists(id);
-        return specializationRepo.findById(id).get();
+        return specializationRepo.findById(id).orElseThrow(SpecializationNotFound::new);
     }
 
     public List<Specialization> getAllSpecialization() {
@@ -47,11 +44,8 @@ public class SpecializationService {
     }
 
     public Specialization addSpecializationToAccount(int sid, int id) {
-        checkIfVetExists(id);
-        checkIfSpecializationExists(id);
-
-        Vet vet = vetRepo.findById(id).get();
-        Specialization specialization = specializationRepo.findById(sid).get();
+        Vet vet = vetRepo.findById(id).orElseThrow(VetNotFound::new);
+        Specialization specialization = specializationRepo.findById(sid).orElseThrow(SpecializationNotFound::new);
 
         specialization.getListOfVets().add(vet);
         vet.getSpecializations().add(specialization);

@@ -22,11 +22,6 @@ public class PetController {
         return new ResponseEntity<>(petService.getPet(id), HttpStatus.OK);
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<Pet>> getAllPet() {
-        return new ResponseEntity<>(petService.getAllPets(), HttpStatus.OK);
-    }
-
     @PostMapping()
     public ResponseEntity<Pet> addPet(@RequestBody Pet pet) {
         return new ResponseEntity<>(petService.addPet(pet), HttpStatus.CREATED);

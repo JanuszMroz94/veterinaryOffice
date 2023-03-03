@@ -23,8 +23,7 @@ public class VetService {
     }
 
     public Vet getVet(int id) {
-        validateVetExists(id);
-        return vetRepo.findById(id).get();
+        return vetRepo.findById(id).orElseThrow(VetNotFound::new);
     }
 
     public List<Vet> getAllVets() {

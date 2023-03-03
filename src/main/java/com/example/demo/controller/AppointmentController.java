@@ -51,11 +51,6 @@ public class AppointmentController {
                 , HttpStatus.CREATED);
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<Appointment>> getAll() {
-        return new ResponseEntity<>(appointmentService.getAllAppointments(), HttpStatus.OK);
-    }
-
     @GetMapping("/checkVets")
     public ResponseEntity<List<VetName>> checkVets(@RequestParam(name = "startDate")
                                                    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)

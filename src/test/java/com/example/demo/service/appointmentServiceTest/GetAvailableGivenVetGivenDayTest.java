@@ -88,7 +88,6 @@ public class GetAvailableGivenVetGivenDayTest {
 
         when(appointmentRepo.givenVetsCertainDate(0, LocalDateTime.of(2000,1,1,8,0)))
                 .thenReturn(vetNameList);
-
         //when
         List<FirstAvailableVisit> result =appointmentService.getAvailableGivenVetGivenDay(exampleDay,0);
         //then

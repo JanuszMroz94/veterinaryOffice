@@ -26,11 +26,6 @@ public class UserController {
         return new ResponseEntity<>(userService.getAccount(id), HttpStatus.OK);
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<User>> getAllAccount() {
-        return new ResponseEntity<>(userService.getAllAccount(), HttpStatus.OK);
-    }
-
     @DeleteMapping()
     public ResponseEntity<Void> deleteAccount(@RequestParam(name = "id") int id) {
         userService.deleteAccount(id);

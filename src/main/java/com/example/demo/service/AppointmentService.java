@@ -42,10 +42,6 @@ public class AppointmentService {
         vetRepo.findById(id).orElseThrow(VetNotFound::new);
     }
 
-    private void checkIfAppointmentExists(int id) {
-        appointmentRepo.findById(id).orElseThrow(AppointmentNotFound::new);
-    }
-
     private void checkIfAppointmentAlreadyTaken(int id, LocalDateTime dateTime) {
         if (!(appointmentRepo.hasVetAppointmentCertainDate(id, dateTime) == null)) {
             throw new AppointmentAlreadyTaken();
@@ -64,20 +60,18 @@ public class AppointmentService {
     }
 
     public Appointment getAppointment(int id) {
-        checkIfAppointmentExists(id);
-        return appointmentRepo.findById(id).get();
+        return appointmentRepo.findById(id).orElseThrow(AppointmentNotFound::new);
     }
 
     public Appointment addAppointmentToVet(int id, int idU, int idP,
                                            LocalDateTime startDate,
                                            LocalDateTime endDate) {
-        checkIfVetExists(id);
         checkIfVetHasVisitAtThatTime(id, startDate);
         checkIfDatesAreCorrect(startDate, endDate);
 
-        Vet vet = vetRepo.findById(id).get();
-        User user = userRepo.findById(idU).get();
-        Pet pet = petRepo.findById(idP).get();
+        Vet vet = vetRepo.findById(id).orElseThrow(VetNotFound::new);
+        User user = userRepo.findById(idU).orElseThrow(UserNotFound::new);
+        Pet pet = petRepo.findById(idP).orElseThrow(PetNotFound::new);
 
         Appointment appointment = new Appointment();
         appointment.setStartDate(startDate);
@@ -87,10 +81,6 @@ public class AppointmentService {
         appointment.setPet(pet);
 
         return appointmentRepo.save(appointment);
-    }
-
-    public List<Appointment> getAllAppointments() {
-        return appointmentRepo.findAll();
     }
 
     public void deleteAppointment(int id) {

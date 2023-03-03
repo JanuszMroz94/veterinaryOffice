@@ -31,12 +31,7 @@ public class UserService {
     }
 
     public User getAccount(int id) {
-        checkIfUserExists(id);
-        return userRepo.findById(id).orElse(null);
-    }
-
-    public List<User> getAllAccount() {
-        return userRepo.findAll();
+        return userRepo.findById(id).orElseThrow(UserNotFound::new);
     }
 
     public void deleteAccount(int id) {
